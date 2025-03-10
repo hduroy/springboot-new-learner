@@ -6,9 +6,12 @@ import com.example.springboot_test.service.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.example.springboot_test.pojo.User;
+// import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RestController //接口返回对象
 @RequestMapping("/user") //localhost:8080/user/**
@@ -33,8 +36,17 @@ public class UserController {
         User user = userService.get(id);
         return ResponseMessage.success(user);
     }
+    //查询所有
+    @GetMapping("/all")
+    public ResponseMessage<Iterable<User>> findAll(){
+        return ResponseMessage.success(userService.findAll());
+    }
+    @GetMapping("/pageall")
+    public ResponseMessage<Page<User>> findAll(Pageable pageable) {
+        Page<User> users = userService.findAll(pageable);
+        return ResponseMessage.success(users);
+    }
 
-    //修改
     @PutMapping
     public ResponseMessage<User> update(@Validated @RequestBody UserDto user){
         User usernew = userService.update(user);
@@ -47,4 +59,5 @@ public class UserController {
         userService.delete(id);
         return ResponseMessage.deletesuccess();
     }
+    
 }

@@ -3,9 +3,16 @@ package com.example.springboot_test.service;
 import com.example.springboot_test.pojo.User;
 import com.example.springboot_test.pojo.dto.UserDto;
 import com.example.springboot_test.repository.UserRepository;
+
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 @Service // 标注为服务类 配置成spring的bean
 public class UserService implements IUserService {
@@ -53,4 +60,13 @@ public class UserService implements IUserService {
 
     }
 
+    @Override
+    public Iterable<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
 }
